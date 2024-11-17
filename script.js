@@ -1,3 +1,17 @@
+// Twoja konfiguracja Firebase
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "breadclicker-1019c",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+// Inicjalizacja Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 let score = 0;
 
 document.getElementById('clicker-button').addEventListener('click', () => {
@@ -7,41 +21,40 @@ document.getElementById('clicker-button').addEventListener('click', () => {
 
 // Funkcja do przesyłania wyniku
 function submitScore(username, score) {
-    fetch('submit_score.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `username=${encodeURIComponent(username)}&score=${encodeURIComponent(score)}`
+    db.collection("leaderboard").add({
+        username: username,
+        score: score,
+        date: firebase.firestore.FieldValue.serverTimestamp()
     })
-    .then(response => response.text())
-    .then(data => {
-        console.log(data);
-        // Opcjonalnie: odśwież leaderboard po zapisaniu wyniku
+    .then(() => {
+        console.log("Wynik zapisany pomyślnie.");
         fetchLeaderboard();
     })
-    .catch(error => {
-        console.error('Error:', error);
+    .catch((error) => {
+        console.error("Błąd: ", error);
     });
 }
 
 // Funkcja do pobierania leaderboardu
 function fetchLeaderboard() {
-    fetch('get_leaderboard.php')
-    .then(response => response.json())
-    .then(data => {
-        const leaderboardElement = document.getElementById('leaderboard');
-        leaderboardElement.innerHTML = ''; // Czyść poprzednie wyniki
+    db.collection("leaderboard")
+      .orderBy("score", "desc")
+      .limit(10)
+      .get()
+      .then((querySnapshot) => {
+          const leaderboardElement = document.getElementById('leaderboard');
+          leaderboardElement.innerHTML = '';
 
-        data.forEach((entry, index) => {
-            const entryElement = document.createElement('div');
-            entryElement.textContent = `${index + 1}. ${entry.username} - ${entry.score} pts`;
-            leaderboardElement.appendChild(entryElement);
-        });
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+          querySnapshot.forEach((doc) => {
+              const data = doc.data();
+              const entryElement = document.createElement('div');
+              entryElement.textContent = `${data.username} - ${data.score} pts`;
+              leaderboardElement.appendChild(entryElement);
+          });
+      })
+      .catch((error) => {
+          console.error("Błąd: ", error);
+      });
 }
 
 // Wywołaj fetchLeaderboard po załadowaniu strony
