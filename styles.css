@@ -1,7 +1,7 @@
-/* Importowanie Google Fonts */
+/* Importing Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-/* Resetowanie marginesów i paddingów */
+/* Resetting margins and paddings */
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +10,7 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-image: url('images/background.jpg'); /* Ścieżka do pliku tła */
+    background-image: url('images/background.jpg'); /* Path to background image */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -23,7 +23,7 @@ body {
     position: relative;
 }
 
-/* Styl nakładki */
+/* Overlay style */
 #overlay {
     position: fixed;
     top: 0;
@@ -32,22 +32,22 @@ body {
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
-    display: block; /* Zawsze widoczna, aby blokować interakcje */
+    display: none; /* Hidden by default */
 }
 
-/* Styl kontenera */
+/* Container style */
 .container {
     max-width: 800px;
     width: 90%;
     padding: 30px;
-    background-color: rgba(255, 255, 255, 0.85); /* Lekka przezroczystość */
+    background-color: rgba(255, 255, 255, 0.85); /* Slight transparency */
     border-radius: 20px;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
     position: relative;
     z-index: 2;
 }
 
-/* Nagłówek */
+/* Header */
 h1 {
     color: #ff4d4d;
     margin-bottom: 30px;
@@ -55,7 +55,7 @@ h1 {
     text-shadow: 2px 2px #ffe6e6;
 }
 
-/* Styl przycisku klikającego */
+/* Clicker button style */
 .clicker-button {
     width: 200px;
     height: 200px;
@@ -80,7 +80,7 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Poprawiona stylizacja obrazka wewnątrz przycisku */
+/* Improved styling for the image inside the button */
 .clicker-image {
     width: 100%;
     height: 100%;
@@ -88,7 +88,7 @@ h1 {
     border-radius: 50%;
 }
 
-/* Animacja aktywnego kliknięcia */
+/* Click animation */
 .clicker-button.active {
     animation: click-animation 0.2s ease-in-out;
 }
@@ -105,18 +105,18 @@ h1 {
     }
 }
 
-/* Styl paragrafów */
+/* Paragraph styles */
 p {
     font-size: 1.2em;
     margin: 15px 0;
 }
 
-#timer {
+#local-timer, #timer {
     font-weight: bold;
     color: #ff4d4d;
 }
 
-/* Styl guzika Submit Score */
+/* Submit Score Button style */
 .submit-score-button {
     padding: 10px 20px;
     background-color: #4CAF50;
@@ -129,135 +129,25 @@ p {
     margin-bottom: 30px;
 }
 
-.submit-score-button:hover {
+.submit-score-button:disabled {
+    background-color: #a5d6a7;
+    cursor: not-allowed;
+}
+
+.submit-score-button:hover:enabled {
     background-color: #45a049;
 }
 
-/* Styl Leaderboard */
-#recent-submits {
+/* Leaderboard style */
+#total-leaderboard {
     margin-top: 30px;
     text-align: left;
-    max-height: 300px;
+    max-height: 400px;
     overflow-y: auto;
-}
-
-.submit-entry {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-    font-size: 1em;
-    transition: background-color 0.3s;
-}
-
-.submit-entry:hover {
-    background-color: #ffe6e6;
-}
-
-.submit-entry:last-child {
-    border-bottom: none;
-}
-
-/* Styl komunikatów zwrotnych */
-#feedback-message {
-    margin-top: 20px;
-    font-size: 1em;
-}
-
-.submission-success {
-    color: green;
-    font-weight: bold;
-}
-
-.submission-error {
-    color: red;
-    font-weight: bold;
-}
-
-/* Styl modalu */
-.modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    z-index: 4; /* Wyższy niż overlay */
-    display: block; /* Zawsze widoczny */
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-}
-
-.modal-content h2 {
-    margin-bottom: 20px;
-    color: #ff4d4d;
-}
-
-.modal-content p {
-    margin-bottom: 20px;
-    font-size: 1.1em;
-}
-
-#username-input {
-    width: 80%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 2px solid #ff4d4d;
-    border-radius: 8px;
-    font-size: 1em;
-}
-
-#username-submit {
-    padding: 10px 20px;
-    background-color: #ff4d4d;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s;
-}
-
-#username-submit:hover {
-    background-color: #e60000;
-}
-
-/* Styl dodatkowych leaderboardów */
-.additional-leaderboards {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    z-index: 2;
-}
-
-.leaderboard-section {
     background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
     padding: 15px;
+    border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.leaderboard-section h3 {
-    margin-bottom: 10px;
-    color: #333333;
-    font-size: 1.2em;
-}
-
-.leaderboard-section p {
-    margin-bottom: 10px;
-    font-size: 0.9em;
-    color: #ff4d4d;
-}
-
-.leaderboard {
-    max-height: 200px;
-    overflow-y: auto;
-    text-align: left;
 }
 
 .leaderboard-entry {
@@ -275,11 +165,147 @@ p {
     border-bottom: none;
 }
 
+/* Feedback message styles */
+#feedback-message {
+    margin-top: 20px;
+    font-size: 1em;
+}
+
+.submission-success {
+    color: green;
+    font-weight: bold;
+}
+
+.submission-error {
+    color: red;
+    font-weight: bold;
+}
+
+.submission-info {
+    color: #3333ff;
+    font-weight: bold;
+}
+
+/* Modal styles */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    z-index: 3; /* Higher than overlay */
+    display: none; /* Hidden by default */
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #ff4d4d;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+/* Admin Warning Message */
+.admin-warning {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Admin Input Groups */
+.admin-input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.admin-input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.admin-input-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Buttons */
+#username-submit, #admin-login-submit {
+    padding: 10px 20px;
+    background-color: #ff4d4d;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+#username-submit:hover, #admin-login-submit:hover {
+    background-color: #e60000;
+}
+
+/* Cancel and Reset Buttons */
+.cancel-button, .reset-button {
+    padding: 10px 20px;
+    background-color: #cccccc;
+    color: #333333;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.cancel-button:hover, .reset-button:hover {
+    background-color: #999999;
+}
+
+/* Admin Panel Button Style */
+.admin-panel-button {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 2; /* Below modals */
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.admin-panel-button:hover {
+    opacity: 1;
+}
+
+/* Hidden class to toggle visibility */
+.hidden {
+    display: none;
+}
+
+/* Feedback Message within Modals */
+.feedback-message {
+    margin-top: 10px;
+    font-size: 0.9em;
+}
+
 /* Responsive Design */
 @media (max-width: 1000px) {
-    .additional-leaderboards {
-        display: none; /* Ukryj dodatkowe leaderboardy na mniejszych ekranach */
-    }
+    /* No additional styles needed */
 }
 
 @media (max-width: 600px) {
@@ -302,7 +328,7 @@ p {
         font-size: 1em;
     }
 
-    .submit-entry, .leaderboard-entry {
+    .leaderboard-entry {
         font-size: 0.9em;
     }
 
@@ -314,7 +340,7 @@ p {
         font-size: 1em;
     }
 
-    #username-input {
+    #username-input, #admin-username, #admin-password {
         width: 90%;
     }
 }
