@@ -1,4 +1,4 @@
-// Twoja konfiguracja Firebase
+// Your Firebase configuration
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
   authDomain: "breadclicker-1019c.firebaseapp.com",
@@ -9,25 +9,25 @@ const firebaseConfig = {
   measurementId: "G-PXS06NYDCM"
 };
 
-// Inicjalizacja Firebase
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// Inicjalizacja zmiennych
+// Initialize variables
 let score = 0;
 const clickerButton = document.getElementById('clicker-button');
 const scoreDisplay = document.getElementById('score');
 const leaderboardElement = document.getElementById('leaderboard');
 const timerDisplay = document.getElementById('timer');
-const leaderboardRefreshInterval = 10 * 60 * 1000; // 10 minut w milisekundach
-let timer = 10 * 60; // 10 minut w sekundach
+const leaderboardRefreshInterval = 10 * 60 * 1000; // 10 minutes in milliseconds
+let timer = 10 * 60; // 10 minutes in seconds
 
-// Funkcja do aktualizacji wyświetlania licznika
+// Function to update the score display
 function updateScoreDisplay() {
     scoreDisplay.innerText = score;
 }
 
-// Funkcja do przesyłania wyniku do Firestore
+// Function to submit the score to Firestore
 function submitScore(username, score) {
     if (!username) return;
 
@@ -37,45 +37,45 @@ function submitScore(username, score) {
         date: firebase.firestore.FieldValue.serverTimestamp()
     })
     .then(() => {
-        console.log("Wynik zapisany pomyślnie.");
+        console.log("Score successfully saved.");
         fetchLeaderboard();
     })
     .catch((error) => {
-        console.error("Błąd przy zapisywaniu wyniku: ", error);
+        console.error("Error saving score: ", error);
     });
 }
 
-// Funkcja do pobierania i wyświetlania leaderboardu
+// Function to fetch and display the leaderboard
 function fetchLeaderboard() {
     db.collection("leaderboard")
       .orderBy("score", "desc")
       .limit(10)
       .get()
       .then((querySnapshot) => {
-          leaderboardElement.innerHTML = ''; // Czyści poprzednie wyniki
+          leaderboardElement.innerHTML = ''; // Clear previous results
 
           querySnapshot.forEach((doc, index) => {
               const data = doc.data();
               const entryElement = document.createElement('div');
               entryElement.classList.add('leaderboard-entry');
-              entryElement.textContent = `${index + 1}. ${data.username} - ${data.score} kliknięć`;
+              entryElement.textContent = `${index + 1}. ${data.username} - ${data.score} clicks`;
               leaderboardElement.appendChild(entryElement);
           });
       })
       .catch((error) => {
-          console.error("Błąd przy pobieraniu leaderboardu: ", error);
+          console.error("Error fetching leaderboard: ", error);
       });
 }
 
-// Funkcja do obsługi kliknięcia przycisku
+// Function to handle single click
 function handleClick() {
     score++;
     updateScoreDisplay();
 }
 
-// Funkcja do obsługi podwójnego kliknięcia przycisku
+// Function to handle double click
 function handleDoubleClick() {
-    const username = prompt("Gratulacje! Podaj swoją nazwę użytkownika:");
+    const username = prompt("Congratulations! Enter your username:");
     if (username) {
         submitScore(username, score);
         score = 0;
@@ -83,7 +83,7 @@ function handleDoubleClick() {
     }
 }
 
-// Funkcja do obsługi animacji kliknięcia
+// Function to handle click animation
 function animateClick() {
     clickerButton.classList.add('active');
     setTimeout(() => {
@@ -91,7 +91,7 @@ function animateClick() {
     }, 100);
 }
 
-// Funkcja do odliczania czasu do następnego odświeżenia leaderboardu
+// Function to start the timer
 function startTimer() {
     const interval = setInterval(() => {
         timer--;
@@ -101,12 +101,12 @@ function startTimer() {
 
         if (timer <= 0) {
             fetchLeaderboard();
-            timer = 10 * 60; // Resetuj timer do 10 minut
+            timer = 10 * 60; // Reset timer to 10 minutes
         }
     }, 1000);
 }
 
-// Dodanie nasłuchiwaczy zdarzeń
+// Add event listeners
 clickerButton.addEventListener('click', () => {
     handleClick();
     animateClick();
@@ -114,7 +114,7 @@ clickerButton.addEventListener('click', () => {
 
 clickerButton.addEventListener('dblclick', handleDoubleClick);
 
-// Inicjalizacja
+// Initialize
 updateScoreDisplay();
 fetchLeaderboard();
 startTimer();
