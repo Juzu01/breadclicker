@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Bread Clicker</title>
@@ -12,75 +12,77 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
-    <!-- Modal do wprowadzenia nickname'u -->
+    <!-- Modal for entering username -->
     <div id="username-modal" class="modal">
         <div class="modal-content">
-            <h2>Witamy w Bread Clicker!</h2>
-            <p>Proszę, podaj swoją nazwę użytkownika, aby rozpocząć:</p>
-            <input type="text" id="username-input" placeholder="Wpisz swój nickname">
-            <button id="username-submit">Rozpocznij!</button>
+            <h2>Welcome to Bread Clicker!</h2>
+            <p>Please enter your username to start:</p>
+            <input type="text" id="username-input" placeholder="Enter your nickname">
+            <button id="username-submit">Start!</button>
         </div>
     </div>
 
-    <!-- Główna kontener aplikacji -->
+    <!-- Admin Panel Button -->
+    <button id="admin-panel-button" class="admin-panel-button" title="Admin Panel">Admin</button>
+
+    <!-- Admin Login Modal -->
+    <div id="admin-login-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Admin Login</h2>
+            <p class="admin-warning">This panel is for admins only.</p>
+            <div class="admin-input-group">
+                <label for="admin-username">Username:</label>
+                <input type="text" id="admin-username" placeholder="Enter admin username">
+            </div>
+            <div class="admin-input-group">
+                <label for="admin-password">Password:</label>
+                <input type="password" id="admin-password" placeholder="Enter admin password">
+            </div>
+            <button id="admin-login-submit">Login</button>
+            <button id="admin-login-cancel" class="cancel-button">Cancel</button>
+            <div id="admin-login-feedback" class="feedback-message"></div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="admin-panel-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Admin Panel</h2>
+            <button id="reset-leaderboard-button" class="reset-button">Reset Leaderboard</button>
+            <button id="admin-panel-close" class="cancel-button">Close</button>
+            <div id="admin-panel-feedback" class="feedback-message"></div>
+        </div>
+    </div>
+
+    <!-- Main application container -->
     <div class="container">
         <h1>Bread Clicker</h1>
         
-        <!-- Przycisk klikający -->
+        <!-- Clicker button -->
         <div id="clicker-button" class="clicker-button">
-            <img src="images/bread.png" alt="Chleb" class="clicker-image">
+            <img src="images/bread.png" alt="Bread" class="clicker-image">
         </div>
         
-        <!-- Wyświetlanie liczby kliknięć -->
-        <p>Twoje Kliknięcia: <span id="score">0</span></p>
+        <!-- Displaying the number of clicks -->
+        <p>Your Clicks: <span id="score">0</span></p>
         
-        <!-- Wyświetlanie timera -->
-        <p>Leaderboard odświeża się za: <span id="timer">01:00</span></p>
+        <!-- Displaying the local timer -->
+        <p>Time to submit your score: <span id="local-timer">60</span> seconds</p>
         
-        <!-- Guzik Submit Score -->
-        <button id="submit-score-button" class="submit-score-button">Submit Score</button>
+        <!-- Submit Score Button -->
+        <button id="submit-score-button" class="submit-score-button" disabled>Submit Score</button>
         
-        <!-- Sekcja Leaderboard -->
-        <h2>Ostatnie Submity</h2>
-        <div id="recent-submits">
-            <!-- Ostatnie submity pojawią się tutaj -->
+        <!-- Leaderboard Section -->
+        <h2>Total Leaderboard</h2>
+        <div id="total-leaderboard" class="leaderboard">
+            <!-- Total scores will appear here -->
         </div>
         
-        <!-- Komunikaty zwrotne -->
+        <!-- Feedback Messages -->
         <div id="feedback-message"></div>
     </div>
 
-    <!-- Dodatkowe Leaderboardy -->
-    <div class="additional-leaderboards">
-        <!-- Leaderboard Dzienny -->
-        <div class="leaderboard-section">
-            <h3>Leaderboard Dzienny</h3>
-            <p>Czas do końca: <span id="daily-timer">23:59:59</span></p>
-            <div id="daily-leaderboard" class="leaderboard">
-                <!-- Wyniki dzienne pojawią się tutaj -->
-            </div>
-        </div>
-        
-        <!-- Leaderboard Miesięczny -->
-        <div class="leaderboard-section">
-            <h3>Leaderboard Miesięczny</h3>
-            <p>Czas do końca: <span id="monthly-timer">30:00:00</span></p>
-            <div id="monthly-leaderboard" class="leaderboard">
-                <!-- Wyniki miesięczne pojawią się tutaj -->
-            </div>
-        </div>
-        
-        <!-- Leaderboard Roczny -->
-        <div class="leaderboard-section">
-            <h3>Leaderboard Roczny</h3>
-            <p>Czas do końca: <span id="yearly-timer">365:00:00</span></p>
-            <div id="yearly-leaderboard" class="leaderboard">
-                <!-- Wyniki roczne pojawią się tutaj -->
-            </div>
-        </div>
-    </div>
-    
-    <!-- Nakładka, aby uniemożliwić interakcję przed wprowadzeniem nickname'u -->
+    <!-- Overlay to prevent interaction before entering username -->
     <div id="overlay"></div>
 
     <script src="script.js"></script>
