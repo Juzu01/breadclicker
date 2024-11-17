@@ -1,4 +1,4 @@
-/* Resetowanie marginesów i paddingów */
+/* Reset margins and paddings */
 * {
     margin: 0;
     padding: 0;
@@ -55,7 +55,7 @@ h1 {
     object-fit: contain;
 }
 
-/* Animacja aktywnego kliknięcia */
+/* Active click animation */
 .clicker-button.active {
     animation: click-animation 0.2s ease-in-out;
 }
@@ -96,4 +96,25 @@ p {
 #timer {
     font-weight: bold;
     color: #ff6347;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .clicker-button {
+        width: 100px;
+        height: 100px;
+    }
+
+    .clicker-image {
+        width: 70%;
+        height: 70%;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    .leaderboard-entry {
+        font-size: 14px;
+    }
 }
