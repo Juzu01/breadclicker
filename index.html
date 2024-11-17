@@ -1,35 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <title>Bread Clicker</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- Firebase App (the core Firebase SDK) -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <!-- Firebase Firestore -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
+    <!-- Modal do wprowadzenia nickname'u -->
+    <div id="username-modal" class="modal">
+        <div class="modal-content">
+            <h2>Witamy w Bread Clicker!</h2>
+            <p>Proszę, podaj swoją nazwę użytkownika, aby rozpocząć:</p>
+            <input type="text" id="username-input" placeholder="Wpisz swój nickname">
+            <button id="username-submit">Rozpocznij!</button>
+        </div>
+    </div>
+
+    <!-- Główna kontener aplikacji -->
     <div class="container">
         <h1>Bread Clicker</h1>
         
-        <!-- Clicker Button -->
+        <!-- Przycisk klikający -->
         <div id="clicker-button" class="clicker-button">
-            <img src="bread.png" alt="Bread" class="clicker-image">
+            <img src="bread.png" alt="Chleb" class="clicker-image">
         </div>
         
-        <!-- Score Display -->
-        <p>Your Clicks: <span id="score">0</span></p>
+        <!-- Wyświetlanie liczby kliknięć -->
+        <p>Twoje Kliknięcia: <span id="score">0</span></p>
         
-        <!-- Timer Display -->
-        <p>Leaderboard refreshes in: <span id="timer">10:00</span></p>
+        <!-- Wyświetlanie timera -->
+        <p>Leaderboard odświeża się za: <span id="timer">10:00</span></p>
         
-        <!-- Leaderboard Section -->
+        <!-- Guzik Submit Score -->
+        <button id="submit-score-button" class="submit-score-button">Submit Score</button>
+        
+        <!-- Sekcja Leaderboard -->
         <h2>Leaderboard</h2>
         <div id="leaderboard">
-            <!-- Scores will appear here -->
+            <!-- Wyniki pojawią się tutaj -->
         </div>
+        
+        <!-- Komunikaty zwrotne -->
+        <div id="feedback-message"></div>
     </div>
+
+    <!-- Nakładka, aby uniemożliwić interakcję przed wprowadzeniem nickname'u -->
+    <div id="overlay"></div>
 
     <script src="script.js"></script>
 </body>
