@@ -28,28 +28,58 @@
         
         <!-- Przycisk klikający -->
         <div id="clicker-button" class="clicker-button">
-            <img src="bread.png" alt="Chleb" class="clicker-image">
+            <img src="images/bread.png" alt="Chleb" class="clicker-image">
         </div>
         
         <!-- Wyświetlanie liczby kliknięć -->
         <p>Twoje Kliknięcia: <span id="score">0</span></p>
         
         <!-- Wyświetlanie timera -->
-        <p>Leaderboard odświeża się za: <span id="timer">10:00</span></p>
+        <p>Leaderboard odświeża się za: <span id="timer">01:00</span></p>
         
         <!-- Guzik Submit Score -->
         <button id="submit-score-button" class="submit-score-button">Submit Score</button>
         
         <!-- Sekcja Leaderboard -->
-        <h2>Leaderboard</h2>
-        <div id="leaderboard">
-            <!-- Wyniki pojawią się tutaj -->
+        <h2>Ostatnie Submity</h2>
+        <div id="recent-submits">
+            <!-- Ostatnie submity pojawią się tutaj -->
         </div>
         
         <!-- Komunikaty zwrotne -->
         <div id="feedback-message"></div>
     </div>
 
+    <!-- Dodatkowe Leaderboardy -->
+    <div class="additional-leaderboards">
+        <!-- Leaderboard Dzienny -->
+        <div class="leaderboard-section">
+            <h3>Leaderboard Dzienny</h3>
+            <p>Czas do końca: <span id="daily-timer">23:59:59</span></p>
+            <div id="daily-leaderboard" class="leaderboard">
+                <!-- Wyniki dzienne pojawią się tutaj -->
+            </div>
+        </div>
+        
+        <!-- Leaderboard Miesięczny -->
+        <div class="leaderboard-section">
+            <h3>Leaderboard Miesięczny</h3>
+            <p>Czas do końca: <span id="monthly-timer">30:00:00</span></p>
+            <div id="monthly-leaderboard" class="leaderboard">
+                <!-- Wyniki miesięczne pojawią się tutaj -->
+            </div>
+        </div>
+        
+        <!-- Leaderboard Roczny -->
+        <div class="leaderboard-section">
+            <h3>Leaderboard Roczny</h3>
+            <p>Czas do końca: <span id="yearly-timer">365:00:00</span></p>
+            <div id="yearly-leaderboard" class="leaderboard">
+                <!-- Wyniki roczne pojawią się tutaj -->
+            </div>
+        </div>
+    </div>
+    
     <!-- Nakładka, aby uniemożliwić interakcję przed wprowadzeniem nickname'u -->
     <div id="overlay"></div>
 
