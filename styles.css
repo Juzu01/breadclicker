@@ -10,10 +10,13 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #ffe6e6;
+    background-image: url('images/background.jpg'); /* Ścieżka do pliku tła */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
     color: #333333;
     text-align: center;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,7 +32,7 @@ body {
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
-    display: none;
+    display: block; /* Zawsze widoczna, aby blokować interakcje */
 }
 
 /* Styl kontenera */
@@ -37,13 +40,14 @@ body {
     max-width: 800px;
     width: 90%;
     padding: 30px;
-    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.85); /* Lekka przezroczystość */
     border-radius: 20px;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
     position: relative;
     z-index: 2;
 }
 
+/* Nagłówek */
 h1 {
     color: #ff4d4d;
     margin-bottom: 30px;
@@ -76,10 +80,12 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Poprawiona stylizacja obrazka wewnątrz przycisku */
 .clicker-image {
-    width: 80%;
-    height: 80%;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+    border-radius: 50%;
 }
 
 /* Animacja aktywnego kliknięcia */
@@ -128,23 +134,25 @@ p {
 }
 
 /* Styl Leaderboard */
-#leaderboard {
+#recent-submits {
     margin-top: 30px;
     text-align: left;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
-.leaderboard-entry {
+.submit-entry {
     padding: 12px;
     border-bottom: 1px solid #ddd;
     font-size: 1em;
     transition: background-color 0.3s;
 }
 
-.leaderboard-entry:hover {
+.submit-entry:hover {
     background-color: #ffe6e6;
 }
 
-.leaderboard-entry:last-child {
+.submit-entry:last-child {
     border-bottom: none;
 }
 
@@ -174,8 +182,8 @@ p {
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    z-index: 3;
-    display: none;
+    z-index: 4; /* Wyższy niż overlay */
+    display: block; /* Zawsze widoczny */
     width: 90%;
     max-width: 400px;
     text-align: center;
@@ -215,7 +223,65 @@ p {
     background-color: #e60000;
 }
 
+/* Styl dodatkowych leaderboardów */
+.additional-leaderboards {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 2;
+}
+
+.leaderboard-section {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.leaderboard-section h3 {
+    margin-bottom: 10px;
+    color: #333333;
+    font-size: 1.2em;
+}
+
+.leaderboard-section p {
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    color: #ff4d4d;
+}
+
+.leaderboard {
+    max-height: 200px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+.leaderboard-entry {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.95em;
+    transition: background-color 0.3s;
+}
+
+.leaderboard-entry:hover {
+    background-color: #ffe6e6;
+}
+
+.leaderboard-entry:last-child {
+    border-bottom: none;
+}
+
 /* Responsive Design */
+@media (max-width: 1000px) {
+    .additional-leaderboards {
+        display: none; /* Ukryj dodatkowe leaderboardy na mniejszych ekranach */
+    }
+}
+
 @media (max-width: 600px) {
     .clicker-button {
         width: 150px;
@@ -223,8 +289,9 @@ p {
     }
 
     .clicker-image {
-        width: 70%;
-        height: 70%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     h1 {
@@ -235,7 +302,7 @@ p {
         font-size: 1em;
     }
 
-    .leaderboard-entry {
+    .submit-entry, .leaderboard-entry {
         font-size: 0.9em;
     }
 
