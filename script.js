@@ -13,14 +13,16 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// Inicjalizacja zmiennych
 let score = 0;
 
+// Obsługa kliknięcia przycisku
 document.getElementById('clicker-button').addEventListener('click', () => {
     score++;
     document.getElementById('score').innerText = score;
 });
 
-// Funkcja do przesyłania wyniku
+// Funkcja do przesyłania wyniku do Firestore
 function submitScore(username, score) {
     db.collection("leaderboard").add({
         username: username,
@@ -36,7 +38,7 @@ function submitScore(username, score) {
     });
 }
 
-// Funkcja do pobierania leaderboardu
+// Funkcja do pobierania i wyświetlania leaderboardu
 function fetchLeaderboard() {
     db.collection("leaderboard")
       .orderBy("score", "desc")
@@ -49,6 +51,7 @@ function fetchLeaderboard() {
           querySnapshot.forEach((doc) => {
               const data = doc.data();
               const entryElement = document.createElement('div');
+              entryElement.classList.add('leaderboard-entry');
               entryElement.textContent = `${data.username} - ${data.score} pts`;
               leaderboardElement.appendChild(entryElement);
           });
@@ -58,10 +61,10 @@ function fetchLeaderboard() {
       });
 }
 
-// Wywołaj fetchLeaderboard po załadowaniu strony
+// Pobierz leaderboard po załadowaniu strony
 window.onload = fetchLeaderboard;
 
-// Przesyłanie wyniku po podwójnym kliknięciu przycisku
+// Obsługa podwójnego kliknięcia przycisku do przesłania wyniku
 document.getElementById('clicker-button').addEventListener('dblclick', () => {
     const username = prompt("Gratulacje! Podaj swoją nazwę użytkownika:");
     if (username) {
