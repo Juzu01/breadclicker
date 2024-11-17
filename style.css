@@ -1,43 +1,63 @@
+/* Resetowanie marginesów i paddingów */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f8f9fa;
     color: #343a40;
     text-align: center;
-    margin: 0;
-    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container {
-    max-width: 600px;
-    margin: 50px auto;
+    max-width: 800px;
+    width: 100%;
     padding: 20px;
     background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 h1 {
     color: #ff6347;
+    margin-bottom: 20px;
 }
 
-#clicker-button {
-    padding: 15px 30px;
-    font-size: 18px;
+.clicker-button {
+    width: 150px;
+    height: 150px;
     background-color: #ff6347;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    position: relative;
 }
 
-#clicker-button:hover {
-    background-color: #e5533d;
+.clicker-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-#score {
-    font-weight: bold;
-    font-size: 24px;
+.clicker-image {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+p {
+    font-size: 18px;
+    margin: 10px 0;
 }
 
 #leaderboard {
@@ -48,8 +68,15 @@ h1 {
 .leaderboard-entry {
     padding: 10px;
     border-bottom: 1px solid #ddd;
+    font-size: 16px;
 }
 
 .leaderboard-entry:last-child {
     border-bottom: none;
+}
+
+/* Timer Styling */
+#timer {
+    font-weight: bold;
+    color: #ff6347;
 }
