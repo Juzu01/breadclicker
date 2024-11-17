@@ -1,11 +1,12 @@
 // Twoja konfiguracja Firebase
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  apiKey: "AIzaSyCe2oHIq_UnAJY6ky9RG2aUgoLSeESbf_o",
+  authDomain: "breadclicker-1019c.firebaseapp.com",
   projectId: "breadclicker-1019c",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  storageBucket: "breadclicker-1019c.firebasestorage.app",
+  messagingSenderId: "497351840391",
+  appId: "1:497351840391:web:2977403af6bb0339719e22",
+  measurementId: "G-PXS06NYDCM"
 };
 
 // Inicjalizacja Firebase
