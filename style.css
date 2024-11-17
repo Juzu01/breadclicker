@@ -1,4 +1,7 @@
-/* Reset margins and paddings */
+/* Importowanie Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Resetowanie marginesów i paddingów */
 * {
     margin: 0;
     padding: 0;
@@ -6,42 +9,66 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    color: #343a40;
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffe6e6;
+    color: #333333;
     text-align: center;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
+/* Styl nakładki */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    display: none;
+}
+
+/* Styl kontenera */
 .container {
     max-width: 800px;
-    width: 100%;
-    padding: 20px;
+    width: 90%;
+    padding: 30px;
     background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 2;
 }
 
 h1 {
-    color: #ff6347;
-    margin-bottom: 20px;
+    color: #ff4d4d;
+    margin-bottom: 30px;
+    font-size: 3em;
+    text-shadow: 2px 2px #ffe6e6;
 }
 
+/* Styl przycisku klikającego */
 .clicker-button {
-    width: 150px;
-    height: 150px;
-    background-color: #ff6347;
+    width: 200px;
+    height: 200px;
+    background-color: #ff6666;
     border-radius: 50%;
-    margin: 0 auto 20px;
+    margin: 0 auto 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
     position: relative;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.clicker-button:hover {
+    background-color: #ff4d4d;
 }
 
 .clicker-button:active {
@@ -55,7 +82,7 @@ h1 {
     object-fit: contain;
 }
 
-/* Active click animation */
+/* Animacja aktywnego kliknięcia */
 .clicker-button.active {
     animation: click-animation 0.2s ease-in-out;
 }
@@ -65,44 +92,134 @@ h1 {
         transform: scale(1);
     }
     50% {
-        transform: scale(0.9);
+        transform: scale(0.85);
     }
     100% {
         transform: scale(1);
     }
 }
 
+/* Styl paragrafów */
 p {
-    font-size: 18px;
-    margin: 10px 0;
+    font-size: 1.2em;
+    margin: 15px 0;
 }
 
+#timer {
+    font-weight: bold;
+    color: #ff4d4d;
+}
+
+/* Styl guzika Submit Score */
+.submit-score-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+    margin-bottom: 30px;
+}
+
+.submit-score-button:hover {
+    background-color: #45a049;
+}
+
+/* Styl Leaderboard */
 #leaderboard {
-    margin-top: 20px;
+    margin-top: 30px;
     text-align: left;
 }
 
 .leaderboard-entry {
-    padding: 10px;
+    padding: 12px;
     border-bottom: 1px solid #ddd;
-    font-size: 16px;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.leaderboard-entry:hover {
+    background-color: #ffe6e6;
 }
 
 .leaderboard-entry:last-child {
     border-bottom: none;
 }
 
-/* Timer Styling */
-#timer {
+/* Styl komunikatów zwrotnych */
+#feedback-message {
+    margin-top: 20px;
+    font-size: 1em;
+}
+
+.submission-success {
+    color: green;
     font-weight: bold;
-    color: #ff6347;
+}
+
+.submission-error {
+    color: red;
+    font-weight: bold;
+}
+
+/* Styl modalu */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    z-index: 3;
+    display: none;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #ff4d4d;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+#username-input {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #ff4d4d;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+#username-submit {
+    padding: 10px 20px;
+    background-color: #ff4d4d;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+#username-submit:hover {
+    background-color: #e60000;
 }
 
 /* Responsive Design */
 @media (max-width: 600px) {
     .clicker-button {
-        width: 100px;
-        height: 100px;
+        width: 150px;
+        height: 150px;
     }
 
     .clicker-image {
@@ -110,11 +227,27 @@ p {
         height: 70%;
     }
 
+    h1 {
+        font-size: 2.5em;
+    }
+
     p {
-        font-size: 16px;
+        font-size: 1em;
     }
 
     .leaderboard-entry {
-        font-size: 14px;
+        font-size: 0.9em;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5em;
+    }
+
+    .modal-content p {
+        font-size: 1em;
+    }
+
+    #username-input {
+        width: 90%;
     }
 }
