@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Music Control Elements
     const musicControlButton = document.getElementById('music-control');
+    const volumeSlider = document.getElementById('volume-slider');
 
     // Audio Elements
     const clickSound = document.getElementById('click-sound');
@@ -268,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
         startNewSession();
         // Start background music after user interaction
         backgroundMusic.play().catch((error) => {
-            console.error("Autoplay został zablokowany przez przeglądarkę.", error);
+            console.error("Autoplay was blocked by the browser.", error);
         });
     });
 
@@ -292,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
             handleClick();
             animateClick();
             // Play click sound
-            clickSound.currentTime = 0; // Resetowanie czasu odtwarzania
+            clickSound.currentTime = 0; // Reset playback time
             clickSound.play();
         } else {
             // Click rate limit exceeded
@@ -364,6 +365,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 backgroundMusic.pause();
                 musicControlButton.textContent = '🔇';
             }
+        });
+    }
+
+    // Volume Slider Event Listener
+    if (volumeSlider) {
+        // Set initial volume based on slider
+        backgroundMusic.volume = volumeSlider.value;
+
+        volumeSlider.addEventListener('input', (e) => {
+            const volume = e.target.value;
+            backgroundMusic.volume = volume;
         });
     }
 
