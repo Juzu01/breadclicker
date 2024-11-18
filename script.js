@@ -251,6 +251,39 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     }
 
+    // Function to create and animate bread images
+    function createBreadDrop() {
+        const bread = document.createElement('img');
+        bread.src = 'images/droppingbread.png'; // Użycie nowej nazwy obrazka
+        bread.classList.add('bread');
+
+        // Get the bounding rectangle of the clicker button
+        const clickerRect = clickerButton.getBoundingClientRect();
+
+        // Calculate random angle for circular distribution
+        const angle = Math.random() * 2 * Math.PI; // Random angle between 0 and 2π radians
+
+        // Calculate x and y offsets based on angle and button's radius
+        const buttonRadius = clickerRect.width / 2;
+        const offsetX = Math.cos(angle) * buttonRadius;
+        const offsetY = Math.sin(angle) * buttonRadius;
+
+        // Set the starting position at the perimeter of the button
+        const startX = clickerRect.left + window.scrollX + buttonRadius + offsetX - 25; // 25px is half of bread width (50px)
+        const startY = clickerRect.top + window.scrollY + buttonRadius + offsetY - 25; // 25px is half of bread height (50px)
+
+        bread.style.left = `${startX}px`;
+        bread.style.top = `${startY}px`;
+
+        // Append to the body
+        document.body.appendChild(bread);
+
+        // Remove the bread image after 4 seconds
+        setTimeout(() => {
+            bread.remove();
+        }, 4000);
+    }
+
     // Event listener for the Submit Score button
     submitScoreButton.addEventListener('click', () => {
         handleSubmitScore();
@@ -295,6 +328,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Play click sound
             clickSound.currentTime = 0; // Reset playback time
             clickSound.play();
+
+            // Create and animate bread drop
+            createBreadDrop();
         } else {
             // Click rate limit exceeded
             showFeedback("Too many clicks! Please try again later.", "submission-error", feedbackMessage);
