@@ -47,6 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const usernameSubmit = document.getElementById('username-submit');
     const overlay = document.getElementById('overlay');
 
+    // Music Control Elements
+    const musicControlButton = document.getElementById('music-control');
+
+    // Audio Elements
+    const clickSound = document.getElementById('click-sound');
+    const backgroundMusic = document.getElementById('background-music');
+
     // Admin Credentials (Hardcoded - Not Secure!)
     const ADMIN_CREDENTIALS = {
         username: "JuzuToSzef",
@@ -56,21 +63,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to show the username modal with animation
     function showUsernameModal() {
         console.log("Showing username modal.");
-        usernameModal.style.display = 'block';
-        usernameModal.classList.remove('animate__fadeOut');
-        usernameModal.classList.add('animate__fadeIn');
+        usernameModal.classList.add('show');
         overlay.style.display = 'block';
     }
 
     // Function to hide the username modal with animation
     function hideUsernameModal() {
         console.log("Hiding username modal.");
-        usernameModal.classList.remove('animate__fadeIn');
-        usernameModal.classList.add('animate__fadeOut');
+        usernameModal.classList.remove('show');
         setTimeout(() => {
-            usernameModal.style.display = 'none';
+            usernameModal.classList.add('hidden');
             overlay.style.display = 'none';
-        }, 500); // Duration of the animation
+        }, 300); // Duration of the transition
     }
 
     // Function to update the score display
@@ -148,7 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
                   const data = doc.data();
                   const entryElement = document.createElement('div');
                   entryElement.classList.add('leaderboard-entry');
-                  entryElement.textContent = `${index + 1}. ${data.username} - ${data.score} Clicks`;
+                  entryElement.innerHTML = `
+                      <span class="username">${data.username}</span>
+                      <span class="score">${data.score} Clicks</span>
+                  `;
                   fragment.appendChild(entryElement);
               });
 
@@ -212,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to initialize the application
     function init() {
         console.log("Initializing application.");
-        // Always show the nickname modal on each visit
+        // Show the nickname modal on each visit
         showUsernameModal();
         updateScoreDisplay();
         fetchTotalLeaderboard();
@@ -259,6 +266,10 @@ document.addEventListener('DOMContentLoaded', () => {
         hideUsernameModal();
         fetchTotalLeaderboard();
         startNewSession();
+        // Start background music after user interaction
+        backgroundMusic.play().catch((error) => {
+            console.error("Autoplay został zablokowany przez przeglądarkę.", error);
+        });
     });
 
     // Event listener to allow submitting the username by pressing Enter
@@ -280,11 +291,81 @@ document.addEventListener('DOMContentLoaded', () => {
 
             handleClick();
             animateClick();
+            // Play click sound
+            clickSound.currentTime = 0; // Resetowanie czasu odtwarzania
+            clickSound.play();
         } else {
             // Click rate limit exceeded
             showFeedback("Too many clicks! Please try again later.", "submission-error", feedbackMessage);
         }
     });
+
+    // Admin Panel Button Event Listener
+    adminPanelButton.addEventListener('click', () => {
+        adminLoginModal.classList.remove('hidden');
+        overlay.style.display = 'block';
+    });
+
+    // Admin Login Submit Event Listener
+    adminLoginSubmit.addEventListener('click', () => {
+        const adminUsername = adminUsernameInput.value.trim();
+        const adminPassword = adminPasswordInput.value.trim();
+
+        if (adminUsername === ADMIN_CREDENTIALS.username && adminPassword === ADMIN_CREDENTIALS.password) {
+            adminLoginModal.classList.add('hidden');
+            adminPanelModal.classList.remove('hidden');
+            adminLoginFeedback.textContent = '';
+        } else {
+            adminLoginFeedback.textContent = 'Invalid credentials. Please try again.';
+        }
+    });
+
+    // Admin Login Cancel Event Listener
+    adminLoginCancel.addEventListener('click', () => {
+        adminLoginModal.classList.add('hidden');
+        overlay.style.display = 'none';
+        adminLoginFeedback.textContent = '';
+    });
+
+    // Admin Panel Close Event Listener
+    adminPanelClose.addEventListener('click', () => {
+        adminPanelModal.classList.add('hidden');
+        overlay.style.display = 'none';
+        adminPanelFeedback.textContent = '';
+    });
+
+    // Reset Leaderboard Button Event Listener
+    resetLeaderboardButton.addEventListener('click', () => {
+        db.collection("leaderboard").get().then((querySnapshot) => {
+            const batch = db.batch();
+            querySnapshot.forEach((doc) => {
+                batch.delete(doc.ref);
+            });
+            return batch.commit();
+        })
+        .then(() => {
+            console.log("Leaderboard successfully reset.");
+            refreshTotalLeaderboard();
+            showFeedback("Leaderboard has been reset.", "submission-success", adminPanelFeedback);
+        })
+        .catch((error) => {
+            console.error("Error resetting leaderboard: ", error);
+            showFeedback("Error resetting leaderboard. Please try again.", "submission-error", adminPanelFeedback);
+        });
+    });
+
+    // Music Control Button Event Listener
+    if (musicControlButton) {
+        musicControlButton.addEventListener('click', () => {
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+                musicControlButton.textContent = '🔊';
+            } else {
+                backgroundMusic.pause();
+                musicControlButton.textContent = '🔇';
+            }
+        });
+    }
 
     init();
 });
