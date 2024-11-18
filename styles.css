@@ -1,11 +1,11 @@
-/* Importowanie nowoczesnej, atrakcyjnej czcionki z Google Fonts */
+/* Importing modern, attractive fonts from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@400;600;700&display=swap');
 
-/* CSS Variables dla spójnej palety kolorów */
+/* CSS Variables for a consistent color palette */
 :root {
-    --primary-color: #ff6f61; /* Ciepły odcień czerwieni */
-    --secondary-color: #6b5b95; /* Głęboki fiolet */
-    --accent-color: #88b04b; /* Świeży zielony */
+    --primary-color: #ff6f61; /* Warm shade of red */
+    --secondary-color: #6b5b95; /* Deep purple */
+    --accent-color: #88b04b; /* Fresh green */
     --background-overlay: rgba(0, 0, 0, 0.5);
     --text-color: #333333;
     --button-color: #4CAF50;
@@ -17,19 +17,19 @@
     --font-secondary: 'Lobster', cursive;
 }
 
-/* Resetowanie marginesów i paddingów */
+/* Resetting margins and paddings */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Styl ciała strony */
+/* Body styling */
 body {
     font-family: var(--font-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-image: url('images/background.jpg'); /* Zachowanie tła */
+    background-image: url('images/background.jpg'); /* Preserving background */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -37,10 +37,10 @@ body {
     text-align: center;
     min-height: 100vh;
     position: relative;
-    overflow-x: hidden; /* Zapobiega przewijaniu poziomemu */
+    overflow-x: hidden; /* Prevents horizontal scrolling */
 }
 
-/* Styl nakładki */
+/* Overlay styling */
 #overlay {
     position: fixed;
     top: 0;
@@ -49,31 +49,31 @@ body {
     bottom: 0;
     background: var(--background-overlay);
     z-index: 1;
-    display: none; /* Ukryte domyślnie */
+    display: none; /* Hidden by default */
     transition: opacity 0.3s ease;
 }
 
-/* Styl kontenera głównego */
+/* Main container styling */
 .container {
     max-width: 800px;
     width: 90%;
     padding: 40px 30px;
-    margin: 80px auto; /* Wycentrowanie z marginesem górnym i dolnym */
-    background-color: var(--modal-background); /* Lekka przejrzystość */
+    margin: 80px auto; /* Centered with top and bottom margins */
+    background-color: var(--modal-background); /* Slight transparency */
     border-radius: 20px;
     box-shadow: 0 12px 24px var(--shadow-color);
     position: relative;
     z-index: 2;
-    animation: fadeIn 0.6s ease-out; /* Subtelna animacja fade-in */
+    animation: fadeIn 0.6s ease-out; /* Subtle fade-in animation */
 }
 
-/* Animacja fade-in dla kontenera */
+/* Fade-in animation for the container */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Styl nagłówków */
+/* Header styling */
 h1 {
     font-family: var(--font-secondary);
     color: var(--primary-color);
@@ -90,7 +90,7 @@ h4 {
     font-weight: 600;
 }
 
-/* Styl przycisku clickera */
+/* Clicker button styling */
 .clicker-button {
     width: 220px;
     height: 220px;
@@ -129,17 +129,17 @@ h4 {
     width: 90%;
     height: 90%;
     object-fit: cover;
-    user-select: none; /* Zapobiega zaznaczaniu obrazu */
-    -webkit-user-drag: none; /* Zapobiega przeciąganiu w Safari */
-    border-radius: 50%; /* Zapewnia, że obrazek jest okrągły */
+    user-select: none; /* Prevents image selection */
+    -webkit-user-drag: none; /* Prevents dragging in Safari */
+    border-radius: 50%; /* Ensures the image is circular */
     transition: transform 0.2s;
 }
 
 .clicker-button:active .clicker-image {
-    transform: scale(1.1); /* Powiększenie obrazka podczas kliknięcia */
+    transform: scale(1.1); /* Enlarges the image on click */
 }
 
-/* Animacja kliknięcia */
+/* Click animation */
 .clicker-button.active {
     animation: click-animation 0.2s ease-in-out;
 }
@@ -150,7 +150,7 @@ h4 {
     100% { transform: scale(1); }
 }
 
-/* Styl paragrafów */
+/* Paragraph styling */
 p {
     font-size: 1.2em;
     margin: 15px 0;
@@ -161,7 +161,7 @@ p {
     color: var(--accent-color);
 }
 
-/* Styl przycisku Submit Score */
+/* Submit Score button styling */
 .submit-score-button {
     padding: 14px 28px;
     background-color: var(--button-color);
@@ -176,7 +176,7 @@ p {
 }
 
 .submit-score-button:disabled {
-    background-color: var(--button-disabled-color); /* Jaśniejszy zielony, gdy zablokowany */
+    background-color: var(--button-disabled-color); /* Lighter green when disabled */
     cursor: not-allowed;
     box-shadow: none;
 }
@@ -187,12 +187,12 @@ p {
 }
 
 .submit-score-button.disabled-countdown {
-    background-color: #cccccc; /* Szary kolor podczas odliczania */
+    background-color: #cccccc; /* Gray color during countdown */
     color: #666666;
     cursor: not-allowed;
 }
 
-/* Styl leaderboard */
+/* Leaderboard styling */
 #total-leaderboard {
     margin-top: 30px;
     text-align: left;
@@ -237,7 +237,7 @@ p {
     color: #777;
 }
 
-/* Styl ikonki korony */
+/* Crown icon styling */
 .crown-icon {
     width: 24px;
     height: 24px;
@@ -245,11 +245,11 @@ p {
     margin-right: 8px;
 }
 
-/* Styl wiadomości zwrotnej */
+/* Feedback message styling */
 #feedback-message {
     margin-top: 20px;
     font-size: 1em;
-    min-height: 24px; /* Utrzymanie przestrzeni nawet gdy puste */
+    min-height: 24px; /* Maintains space even when empty */
 }
 
 .submission-success {
@@ -267,7 +267,7 @@ p {
     font-weight: 600;
 }
 
-/* Styl modali */
+/* Modal styling */
 .modal {
     position: fixed;
     top: 50%;
@@ -277,7 +277,7 @@ p {
     padding: 40px 30px;
     border-radius: 15px;
     box-shadow: 0 8px 24px var(--shadow-color);
-    z-index: 4; /* Wyższy niż overlay */
+    z-index: 4; /* Higher than overlay */
     width: 90%;
     max-width: 450px;
     text-align: center;
@@ -308,7 +308,7 @@ p {
     color: var(--text-color);
 }
 
-/* Styl pól input */
+/* Input fields styling */
 #username-input, #admin-username, #admin-password {
     width: 85%;
     padding: 14px;
@@ -324,7 +324,7 @@ p {
     outline: none;
 }
 
-/* Styl przycisków w modalach */
+/* Buttons in modals styling */
 #username-submit, #admin-login-submit {
     padding: 12px 26px;
     background-color: var(--primary-color);
@@ -343,15 +343,15 @@ p {
     transform: translateY(-2px);
 }
 
-/* Styl wiadomości zwrotnej w modalach */
+/* Feedback messages in modals */
 #username-feedback, #admin-login-feedback {
     margin-top: 10px;
     font-size: 0.95em;
     color: #f44336;
-    min-height: 20px; /* Utrzymanie przestrzeni nawet gdy puste */
+    min-height: 20px; /* Maintains space even when empty */
 }
 
-/* Styl przycisków w panelu administracyjnym */
+/* Admin panel buttons styling */
 #reset-leaderboard-button, #delete-user-button {
     padding: 12px 28px;
     background-color: var(--secondary-color);
@@ -370,7 +370,7 @@ p {
     transform: translateY(-2px);
 }
 
-/* Styl przycisków anulowania i zamykania */
+/* Cancel and close buttons styling */
 .cancel-button {
     padding: 12px 28px;
     background-color: #cccccc;
@@ -389,7 +389,7 @@ p {
     transform: translateY(-2px);
 }
 
-/* Styl przycisku panelu administracyjnego */
+/* Admin panel button styling */
 .admin-panel-button {
     position: fixed;
     top: 20px;
@@ -400,7 +400,7 @@ p {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    z-index: 3; /* Poniżej modalów */
+    z-index: 3; /* Below modals */
     opacity: 0.85;
     transition: opacity 0.3s, background-color 0.3s, transform 0.2s;
     box-shadow: 0 4px 8px var(--shadow-color);
@@ -413,18 +413,26 @@ p {
     transform: translateY(-2px);
 }
 
-/* Styl wiadomości zwrotnej w panelach */
+/* Feedback messages in panels */
 .feedback-message {
     margin-top: 10px;
     font-size: 0.95em;
-    min-height: 20px; /* Utrzymanie przestrzeni nawet gdy puste */
+    min-height: 20px; /* Maintains space even when empty */
 }
 
-/* Styl przycisku muzyki */
-#music-control {
+/* Music controls container styling */
+#music-controls {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    right: 80px; /* Spacing from music button */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between button and slider */
+    z-index: 5; /* Above other elements */
+}
+
+/* Music control button styling */
+#music-control {
     padding: 10px 20px;
     background-color: rgba(255, 255, 255, 0.8);
     border: none;
@@ -433,7 +441,6 @@ p {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     font-size: 1.2em;
     transition: background-color 0.3s, transform 0.2s, opacity 0.3s;
-    z-index: 5; /* Powyżej innych elementów */
 }
 
 #music-control:hover {
@@ -441,7 +448,52 @@ p {
     transform: translateY(-2px);
 }
 
-/* Responsywność dla tabletów */
+/* Volume slider styling */
+#volume-slider {
+    width: 100px;
+    cursor: pointer;
+    appearance: none;
+    height: 6px;
+    background: #ddd;
+    outline: none;
+    border-radius: 3px;
+    transition: background 0.3s;
+}
+
+#volume-slider:hover {
+    background: #ccc;
+}
+
+#volume-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#volume-slider::-webkit-slider-thumb:hover {
+    background: #ff4d4d;
+    transform: scale(1.2);
+}
+
+#volume-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#volume-slider::-moz-range-thumb:hover {
+    background: #ff4d4d;
+    transform: scale(1.2);
+}
+
+/* Responsive design for tablets */
 @media (max-width: 768px) {
     .clicker-button {
         width: 180px;
@@ -475,9 +527,18 @@ p {
     #username-input, #admin-username, #admin-password {
         width: 90%;
     }
+
+    /* Adjust music controls on smaller screens */
+    #music-controls {
+        right: 60px;
+    }
+
+    #volume-slider {
+        width: 80px;
+    }
 }
 
-/* Responsywność dla urządzeń mobilnych */
+/* Responsive design for mobile devices */
 @media (max-width: 480px) {
     .clicker-button {
         width: 150px;
@@ -510,5 +571,9 @@ p {
     #music-control {
         padding: 8px 16px;
         font-size: 1em;
+    }
+
+    #volume-slider {
+        width: 60px;
     }
 }
