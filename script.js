@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let score = 0;
     let username = '';
     let clickTimestamps = []; // Array to store click timestamps
-    const clickLimit = 14; // Maksymalna liczba kliknięć w czasie 1 sekundy
+    const clickLimit = 14; // Maximum number of clicks in 1 second
     const clickWindow = 1000; // Time window in milliseconds (1 second)
     const localTimerDuration = 60; // Time in seconds to submit the score
 
@@ -53,18 +53,24 @@ document.addEventListener('DOMContentLoaded', () => {
         password: "kL110L010__"
     };
 
-    // Function to show the username modal
+    // Function to show the username modal with animation
     function showUsernameModal() {
         console.log("Showing username modal.");
         usernameModal.style.display = 'block';
+        usernameModal.classList.remove('animate__fadeOut');
+        usernameModal.classList.add('animate__fadeIn');
         overlay.style.display = 'block';
     }
 
-    // Function to hide the username modal
+    // Function to hide the username modal with animation
     function hideUsernameModal() {
         console.log("Hiding username modal.");
-        usernameModal.style.display = 'none';
-        overlay.style.display = 'none';
+        usernameModal.classList.remove('animate__fadeIn');
+        usernameModal.classList.add('animate__fadeOut');
+        setTimeout(() => {
+            usernameModal.style.display = 'none';
+            overlay.style.display = 'none';
+        }, 500); // Duration of the animation
     }
 
     // Function to update the score display
@@ -225,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Function to check if the user can click (limit to 7 clicks per second)
+    // Function to check if the user can click (limit to 14 clicks per second)
     function canClick() {
         const now = Date.now();
         // Remove clicks older than 1 second
@@ -236,88 +242,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return false;
     }
-
-    // Function to handle Admin Login
-    function handleAdminLogin() {
-        const enteredUsername = adminUsernameInput.value.trim();
-        const enteredPassword = adminPasswordInput.value;
-
-        if (enteredUsername === ADMIN_CREDENTIALS.username && enteredPassword === ADMIN_CREDENTIALS.password) {
-            // Successful login
-            adminLoginFeedback.textContent = '';
-            adminLoginModal.classList.add('hidden');
-            adminPanelModal.classList.remove('hidden');
-            overlay.style.display = 'block';
-        } else {
-            // Failed login
-            showFeedback("Invalid admin credentials.", "submission-error", adminLoginFeedback);
-        }
-    }
-
-    // Function to handle Admin Logout/Close
-    function handleAdminClose() {
-        adminPanelModal.classList.add('hidden');
-        overlay.style.display = 'none';
-    }
-
-    // Function to reset the leaderboard
-    function resetLeaderboard() {
-        // Confirmation prompt
-        const confirmation = confirm("Are you sure you want to reset the leaderboard?");
-        if (!confirmation) return;
-
-        db.collection("leaderboard").get().then((querySnapshot) => {
-            const batch = db.batch();
-            querySnapshot.forEach((doc) => {
-                batch.delete(doc.ref);
-            });
-            return batch.commit();
-        }).then(() => {
-            console.log("Leaderboard has been reset.");
-            refreshTotalLeaderboard();
-            showFeedback("Leaderboard has been reset.", "submission-success", adminPanelFeedback);
-        }).catch((error) => {
-            console.error("Error resetting leaderboard: ", error);
-            showFeedback("Error resetting leaderboard. Please try again.", "submission-error", adminPanelFeedback);
-        });
-    }
-
-    // Event listener for the Admin Panel Button
-    adminPanelButton.addEventListener('click', () => {
-        // Hide nickname modal if it's open
-        if (usernameModal.style.display === 'block') {
-            hideUsernameModal();
-        }
-
-        // Show Admin Login Modal
-        adminLoginModal.classList.remove('hidden');
-        overlay.style.display = 'block';
-        // Clear previous admin login inputs and feedback
-        adminUsernameInput.value = '';
-        adminPasswordInput.value = '';
-        adminLoginFeedback.textContent = '';
-    });
-
-    // Event listener for Admin Login Submit
-    adminLoginSubmit.addEventListener('click', () => {
-        handleAdminLogin();
-    });
-
-    // Event listener for Admin Login Cancel
-    adminLoginCancel.addEventListener('click', () => {
-        adminLoginModal.classList.add('hidden');
-        overlay.style.display = 'none';
-    });
-
-    // Event listener for Admin Panel Close
-    adminPanelClose.addEventListener('click', () => {
-        handleAdminClose();
-    });
-
-    // Event listener for Reset Leaderboard Button
-    resetLeaderboardButton.addEventListener('click', () => {
-        resetLeaderboard();
-    });
 
     // Event listener for the Submit Score button
     submitScoreButton.addEventListener('click', () => {
@@ -341,13 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
     usernameInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             usernameSubmit.click();
-        }
-    });
-
-    // Event listener for pressing Enter in admin password field
-    adminPasswordInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            adminLoginSubmit.click();
         }
     });
 
