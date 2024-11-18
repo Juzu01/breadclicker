@@ -1,99 +1,602 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Ultimate Anya Nami's Bread Clicker</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Animate.css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <!-- Firebase App (the core Firebase SDK) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <!-- Firebase Firestore -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-</head>
-<body>
-    <!-- Modal for entering username -->
-    <div id="username-modal" class="modal animate__animated">
-        <div class="modal-content">
-            <h2>Welcome to Bread Clicker!</h2>
-            <p>Please enter your nickname to start:</p>
-            <input type="text" id="username-input" placeholder="Enter your nickname">
-            <button id="username-submit">Start!</button>
-            <div id="username-feedback"></div>
-        </div>
-    </div>
+/* Importing modern, attractive fonts from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@400;600;700&display=swap');
 
-    <!-- Admin Panel Button -->
-    <button id="admin-panel-button" class="admin-panel-button" title="Admin Panel">Admin - Not Working Yet ;c</button>
+/* CSS Variables for a consistent color palette */
+:root {
+    --primary-color: #ff6f61; /* Warm shade of red */
+    --secondary-color: #6b5b95; /* Deep purple */
+    --accent-color: #88b04b; /* Fresh green */
+    --background-overlay: rgba(0, 0, 0, 0.5);
+    --text-color: #333333;
+    --button-color: #4CAF50;
+    --button-hover-color: #45a049;
+    --button-disabled-color: #a5d6a7;
+    --modal-background: rgba(255, 255, 255, 0.95);
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --font-primary: 'Poppins', sans-serif;
+    --font-secondary: 'Lobster', cursive;
+}
 
-    <!-- Admin Login Modal -->
-    <div id="admin-login-modal" class="modal hidden">
-        <div class="modal-content">
-            <h2>Admin Login</h2>
-            <p>Please enter admin credentials:</p>
-            <input type="text" id="admin-username" placeholder="Username">
-            <input type="password" id="admin-password" placeholder="Password">
-            <button id="admin-login-submit">Login</button>
-            <button id="admin-login-cancel" class="cancel-button">Cancel</button>
-            <div id="admin-login-feedback" class="feedback-message"></div>
-        </div>
-    </div>
+/* Resetting margins and paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    <!-- Admin Panel Modal -->
-    <div id="admin-panel-modal" class="modal hidden">
-        <div class="modal-content">
-            <h2>Admin Panel</h2>
-            <p>Are you sure you want to reset the leaderboard?</p>
-            <button id="reset-leaderboard-button" class="reset-button">Reset Leaderboard</button>
-            <button id="admin-panel-close" class="cancel-button">Close</button>
-            <div id="admin-panel-feedback" class="feedback-message"></div>
-        </div>
-    </div>
+/* Body styling */
+body {
+    font-family: var(--font-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: url('images/background.jpg'); /* Preserving background */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    color: var(--text-color);
+    text-align: center;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden; /* Prevents horizontal scrolling */
+}
 
-    <!-- Main application container -->
-    <div class="container">
-        <h1>Ultimate Anya Nami's Bread Clicker</h1>
-        <h4>By Juzui &lt;;</h4>
-        
-        <!-- Clicker button -->
-        <div id="clicker-button" class="clicker-button">
-            <img src="images/bread.png" alt="Bread" class="clicker-image">
-        </div>
-        
-        <!-- Displaying the number of clicks -->
-        <p>Your Clicks: <span id="score">0</span></p>
-        
-        <!-- Displaying the local timer -->
-        <p>Time to submit your score: <span id="local-timer">60</span> seconds</p>
-        
-        <!-- Submit Score Button -->
-        <button id="submit-score-button" class="submit-score-button" disabled>Submit Score</button>
-        
-        <!-- Leaderboard Section -->
-        <h2>Leaderboard</h2>
-        <div id="total-leaderboard" class="leaderboard">
-            <!-- Total scores will appear here -->
-        </div>
-        
-        <!-- Feedback Messages -->
-        <div id="feedback-message"></div>
-    </div>
+/* Overlay styling */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--background-overlay);
+    z-index: 1;
+    display: none; /* Hidden by default */
+    transition: opacity 0.3s ease;
+}
 
-    <!-- Overlay to prevent interaction before entering username -->
-    <div id="overlay"></div>
+/* Main container styling */
+.container {
+    max-width: 800px;
+    width: 90%;
+    padding: 40px 30px;
+    margin: 80px auto; /* Centered with top and bottom margins */
+    background-color: var(--modal-background); /* Slight transparency */
+    border-radius: 20px;
+    box-shadow: 0 12px 24px var(--shadow-color);
+    position: relative;
+    z-index: 2;
+    animation: fadeIn 0.6s ease-out; /* Subtle fade-in animation */
+}
 
-    <!-- Audio Elements -->
-    <audio id="click-sound" src="sounds/click-sound.mp3" preload="auto"></audio>
-    <audio id="background-music" src="sounds/background-music.mp3" preload="auto" loop></audio>
+/* Fade-in animation for the container */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-    <!-- Music Control Button and Volume Slider -->
-    <div id="music-controls">
-        <button id="music-control">🔊</button>
-        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
-    </div>
+/* Header styling */
+h1 {
+    font-family: var(--font-secondary);
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 2.8em;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+    font-weight: 700;
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
+h4 {
+    color: #555555;
+    margin-bottom: 30px;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+/* Clicker button styling */
+.clicker-button {
+    width: 220px;
+    height: 220px;
+    background: linear-gradient(45deg, #ff6f61, #6b5b95, #88b04b, #ff6f61);
+    background-size: 800% 800%;
+    border-radius: 50%;
+    margin: 0 auto 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    border: none;
+    outline: none;
+    transition: transform 0.1s ease-in-out, box-shadow 0.3s;
+    box-shadow: 0 8px 16px var(--shadow-color);
+    animation: gradientAnimation 15s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.clicker-button:hover {
+    box-shadow: 0 12px 24px var(--shadow-color);
+}
+
+.clicker-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 6px 12px var(--shadow-color);
+}
+
+.clicker-image {
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    user-select: none; /* Prevents image selection */
+    -webkit-user-drag: none; /* Prevents dragging in Safari */
+    border-radius: 50%; /* Ensures the image is circular */
+    transition: transform 0.2s;
+}
+
+.clicker-button:active .clicker-image {
+    transform: scale(1.1); /* Enlarges the image on click */
+}
+
+/* Click animation */
+.clicker-button.active {
+    animation: click-animation 0.2s ease-in-out;
+}
+
+@keyframes click-animation {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.85); }
+    100% { transform: scale(1); }
+}
+
+/* Paragraph styling */
+p {
+    font-size: 1.2em;
+    margin: 15px 0;
+}
+
+#local-timer, #timer, #score {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+/* Submit Score button styling */
+.submit-score-button {
+    padding: 14px 28px;
+    background-color: var(--button-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-bottom: 30px;
+    box-shadow: 0 6px 12px var(--shadow-color);
+}
+
+.submit-score-button:disabled {
+    background-color: var(--button-disabled-color); /* Lighter green when disabled */
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.submit-score-button:hover:enabled {
+    background-color: var(--button-hover-color);
+    transform: translateY(-2px);
+}
+
+.submit-score-button.disabled-countdown {
+    background-color: #cccccc; /* Gray color during countdown */
+    color: #666666;
+    cursor: not-allowed;
+}
+
+/* Leaderboard styling */
+#total-leaderboard {
+    margin-top: 30px;
+    text-align: left;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px var(--shadow-color);
+}
+
+.leaderboard-entry {
+    padding: 12px 10px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 1.1em;
+    transition: background-color 0.3s;
+    cursor: default;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.leaderboard-entry:hover {
+    background-color: #f1f1f1;
+}
+
+.leaderboard-entry:last-child {
+    border-bottom: none;
+}
+
+.username {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.score {
+    color: var(--accent-color);
+}
+
+.date {
+    font-size: 0.85em;
+    color: #777;
+}
+
+/* Crown icon styling */
+.crown-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+/* Feedback message styling */
+#feedback-message {
+    margin-top: 20px;
+    font-size: 1em;
+    min-height: 24px; /* Maintains space even when empty */
+}
+
+.submission-success {
+    color: #4CAF50;
+    font-weight: 600;
+}
+
+.submission-error {
+    color: #f44336;
+    font-weight: 600;
+}
+
+.submission-info {
+    color: #5555ff;
+    font-weight: 600;
+}
+
+/* Modal styling */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    background-color: var(--modal-background);
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px var(--shadow-color);
+    z-index: 4; /* Higher than overlay */
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.hidden {
+    display: none;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    font-family: var(--font-secondary);
+    font-size: 2em;
+    font-weight: 700;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    color: var(--text-color);
+}
+
+/* Input fields styling */
+#username-input, #admin-username, #admin-password {
+    width: 85%;
+    padding: 14px;
+    margin-bottom: 15px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+#username-input:focus, #admin-username:focus, #admin-password:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+/* Buttons in modals styling */
+#username-submit, #admin-login-submit {
+    padding: 12px 26px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 10px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+#username-submit:hover, #admin-login-submit:hover {
+    background-color: #e60000;
+    transform: translateY(-2px);
+}
+
+/* Feedback messages in modals */
+#username-feedback, #admin-login-feedback {
+    margin-top: 10px;
+    font-size: 0.95em;
+    color: #f44336;
+    min-height: 20px; /* Maintains space even when empty */
+}
+
+/* Admin panel buttons styling */
+#reset-leaderboard-button, #delete-user-button {
+    padding: 12px 28px;
+    background-color: var(--secondary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-bottom: 15px;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+#reset-leaderboard-button:hover, #delete-user-button:hover {
+    background-color: #333333;
+    transform: translateY(-2px);
+}
+
+/* Cancel and close buttons styling */
+.cancel-button {
+    padding: 12px 28px;
+    background-color: #cccccc;
+    color: #333333;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 10px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.cancel-button:hover {
+    background-color: #b3b3b3;
+    transform: translateY(-2px);
+}
+
+/* Admin panel button styling */
+.admin-panel-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 3; /* Below modals */
+    opacity: 0.85;
+    transition: opacity 0.3s, background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    font-size: 1em;
+}
+
+.admin-panel-button:hover {
+    opacity: 1;
+    background-color: #333333;
+    transform: translateY(-2px);
+}
+
+/* Feedback messages in panels */
+.feedback-message {
+    margin-top: 10px;
+    font-size: 0.95em;
+    min-height: 20px; /* Maintains space even when empty */
+}
+
+/* Music controls container styling */
+#music-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 80px; /* Spacing from music button */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between button and slider */
+    z-index: 5; /* Above other elements */
+}
+
+/* Music control button styling */
+#music-control {
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 1.2em;
+    transition: background-color 0.3s, transform 0.2s, opacity 0.3s;
+}
+
+#music-control:hover {
+    background-color: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+}
+
+/* Volume slider styling */
+#volume-slider {
+    width: 100px;
+    cursor: pointer;
+    appearance: none;
+    height: 6px;
+    background: #ddd;
+    outline: none;
+    border-radius: 3px;
+    transition: background 0.3s;
+}
+
+#volume-slider:hover {
+    background: #ccc;
+}
+
+#volume-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#volume-slider::-webkit-slider-thumb:hover {
+    background: #ff4d4d;
+    transform: scale(1.2);
+}
+
+#volume-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#volume-slider::-moz-range-thumb:hover {
+    background: #ff4d4d;
+    transform: scale(1.2);
+}
+
+/* Bread Image Styling */
+.bread {
+    position: absolute;
+    width: 50px; /* Adjust size as needed */
+    height: 50px; /* Adjust size as needed */
+    pointer-events: none; /* Allows clicks to pass through */
+    animation: drop 4s forwards;
+    opacity: 1;
+    z-index: 3; /* Ensure it appears above other elements */
+}
+
+/* Drop Animation */
+@keyframes drop {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(200px); /* Adjust the drop distance as needed */
+    }
+}
+
+/* Responsive design for tablets */
+@media (max-width: 768px) {
+    .clicker-button {
+        width: 180px;
+        height: 180px;
+    }
+
+    h1 {
+        font-size: 2.5em;
+    }
+
+    h4 {
+        font-size: 1.2em;
+    }
+
+    p {
+        font-size: 1em;
+    }
+
+    .leaderboard-entry {
+        font-size: 1em;
+    }
+
+    .modal-content h2 {
+        font-size: 1.8em;
+    }
+
+    .modal-content p {
+        font-size: 1em;
+    }
+
+    #username-input, #admin-username, #admin-password {
+        width: 90%;
+    }
+
+    /* Adjust music controls on smaller screens */
+    #music-controls {
+        right: 60px;
+    }
+
+    #volume-slider {
+        width: 80px;
+    }
+}
+
+/* Responsive design for mobile devices */
+@media (max-width: 480px) {
+    .clicker-button {
+        width: 150px;
+        height: 150px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h4 {
+        font-size: 1em;
+    }
+
+    .submit-score-button {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+
+    #reset-leaderboard-button, #delete-user-button, .cancel-button {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+
+    .admin-panel-button {
+        padding: 8px 16px;
+        font-size: 0.9em;
+    }
+
+    #music-control {
+        padding: 8px 16px;
+        font-size: 1em;
+    }
+
+    #volume-slider {
+        width: 60px;
+    }
+}
