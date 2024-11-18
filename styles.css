@@ -1,360 +1,459 @@
-/* Importing Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+/* Importowanie nowoczesnej, atrakcyjnej czcionki z Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@400;600;700&display=swap');
 
-/* Resetting margins and paddings */
+/* CSS Variables dla spójnej palety kolorów */
+:root {
+    --primary-color: #ff6f61; /* Ciepły odcień czerwieni */
+    --secondary-color: #6b5b95; /* Głęboki fiolet */
+    --accent-color: #88b04b; /* Świeży zielony */
+    --background-overlay: rgba(0, 0, 0, 0.5);
+    --text-color: #333333;
+    --button-color: #4CAF50;
+    --button-hover-color: #45a049;
+    --button-disabled-color: #a5d6a7;
+    --modal-background: rgba(255, 255, 255, 0.95);
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --font-primary: 'Poppins', sans-serif;
+    --font-secondary: 'Lobster', cursive;
+}
+
+/* Resetowanie marginesów i paddingów */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Styl ciała strony */
 body {
-    font-family: 'Roboto', sans-serif;
-    background-image: url('images/background.jpg'); /* Path to background image */
+    font-family: var(--font-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: url('images/background.jpg'); /* Zachowanie tła */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    color: #333333;
+    color: var(--text-color);
     text-align: center;
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     position: relative;
+    overflow-x: hidden; /* Zapobiega przewijaniu poziomemu */
 }
 
-/* Overlay style */
+/* Styl nakładki */
 #overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--background-overlay);
     z-index: 1;
-    display: none; /* Hidden by default */
+    display: none; /* Ukryte domyślnie */
+    transition: opacity 0.3s ease;
 }
 
-/* Container style */
+/* Styl kontenera głównego */
 .container {
     max-width: 800px;
     width: 90%;
-    padding: 30px;
-    background-color: rgba(255, 255, 255, 0.85); /* Slight transparency */
+    padding: 40px 30px;
+    margin: 80px auto; /* Wycentrowanie z marginesem górnym i dolnym */
+    background-color: var(--modal-background); /* Lekka przejrzystość */
     border-radius: 20px;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 24px var(--shadow-color);
     position: relative;
     z-index: 2;
+    animation: fadeIn 0.6s ease-out; /* Subtelna animacja fade-in */
 }
 
-/* Header */
+/* Animacja fade-in dla kontenera */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Styl nagłówków */
 h1 {
-    color: #ff4d4d;
-    margin-bottom: 30px;
-    font-size: 3em;
-    text-shadow: 2px 2px #ffe6e6;
+    font-family: var(--font-secondary);
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 2.8em;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+    font-weight: 700;
 }
 
-/* Clicker button style */
+h4 {
+    color: #555555;
+    margin-bottom: 30px;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+/* Styl przycisku clickera */
 .clicker-button {
-    width: 200px;
-    height: 200px;
-    background-color: #ff6666;
+    width: 220px;
+    height: 220px;
+    background: linear-gradient(45deg, #ff6f61, #6b5b95, #88b04b, #ff6f61);
+    background-size: 800% 800%;
     border-radius: 50%;
     margin: 0 auto 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
     position: relative;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border: none;
+    outline: none;
+    transition: transform 0.1s ease-in-out, box-shadow 0.3s;
+    box-shadow: 0 8px 16px var(--shadow-color);
+    animation: gradientAnimation 15s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .clicker-button:hover {
-    background-color: #ff4d4d;
+    box-shadow: 0 12px 24px var(--shadow-color);
 }
 
 .clicker-button:active {
     transform: scale(0.95);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 12px var(--shadow-color);
 }
 
-/* Improved styling for the image inside the button */
 .clicker-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 50%;
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    user-select: none; /* Zapobiega zaznaczaniu obrazu */
+    -webkit-user-drag: none; /* Zapobiega przeciąganiu w Safari */
+    border-radius: 50%; /* Zapewnia, że obrazek jest okrągły */
+    transition: transform 0.2s;
 }
 
-/* Click animation */
+.clicker-button:active .clicker-image {
+    transform: scale(1.1); /* Powiększenie obrazka podczas kliknięcia */
+}
+
+/* Animacja kliknięcia */
 .clicker-button.active {
     animation: click-animation 0.2s ease-in-out;
 }
 
 @keyframes click-animation {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(0.85);
-    }
-    100% {
-        transform: scale(1);
-    }
+    0% { transform: scale(1); }
+    50% { transform: scale(0.85); }
+    100% { transform: scale(1); }
 }
 
-/* Paragraph styles */
+/* Styl paragrafów */
 p {
     font-size: 1.2em;
     margin: 15px 0;
 }
 
-#local-timer, #timer {
+#local-timer, #timer, #score {
     font-weight: bold;
-    color: #ff4d4d;
+    color: var(--accent-color);
 }
 
-/* Submit Score Button style */
+/* Styl przycisku Submit Score */
 .submit-score-button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
+    padding: 14px 28px;
+    background-color: var(--button-color);
     color: #ffffff;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 1em;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
     margin-bottom: 30px;
+    box-shadow: 0 6px 12px var(--shadow-color);
 }
 
 .submit-score-button:disabled {
-    background-color: #a5d6a7;
+    background-color: var(--button-disabled-color); /* Jaśniejszy zielony, gdy zablokowany */
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 .submit-score-button:hover:enabled {
-    background-color: #45a049;
+    background-color: var(--button-hover-color);
+    transform: translateY(-2px);
 }
 
-/* Leaderboard style */
+.submit-score-button.disabled-countdown {
+    background-color: #cccccc; /* Szary kolor podczas odliczania */
+    color: #666666;
+    cursor: not-allowed;
+}
+
+/* Styl leaderboard */
 #total-leaderboard {
     margin-top: 30px;
     text-align: left;
     max-height: 400px;
     overflow-y: auto;
     background-color: rgba(255, 255, 255, 0.9);
-    padding: 15px;
+    padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px var(--shadow-color);
 }
 
 .leaderboard-entry {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-    font-size: 0.95em;
+    padding: 12px 10px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 1.1em;
     transition: background-color 0.3s;
+    cursor: default;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .leaderboard-entry:hover {
-    background-color: #ffe6e6;
+    background-color: #f1f1f1;
 }
 
 .leaderboard-entry:last-child {
     border-bottom: none;
 }
 
-/* Feedback message styles */
+.username {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.score {
+    color: var(--accent-color);
+}
+
+.date {
+    font-size: 0.85em;
+    color: #777;
+}
+
+/* Styl ikonki korony */
+.crown-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+/* Styl wiadomości zwrotnej */
 #feedback-message {
     margin-top: 20px;
     font-size: 1em;
+    min-height: 24px; /* Utrzymanie przestrzeni nawet gdy puste */
 }
 
 .submission-success {
-    color: green;
-    font-weight: bold;
+    color: #4CAF50;
+    font-weight: 600;
 }
 
 .submission-error {
-    color: red;
-    font-weight: bold;
+    color: #f44336;
+    font-weight: 600;
 }
 
 .submission-info {
-    color: #3333ff;
-    font-weight: bold;
+    color: #5555ff;
+    font-weight: 600;
 }
 
-/* Modal styles */
+/* Styl modali */
 .modal {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #ffffff;
-    padding: 40px;
+    transform: translate(-50%, -50%) scale(0.95);
+    background-color: var(--modal-background);
+    padding: 40px 30px;
     border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    z-index: 3; /* Higher than overlay */
-    display: none; /* Hidden by default */
+    box-shadow: 0 8px 24px var(--shadow-color);
+    z-index: 4; /* Wyższy niż overlay */
     width: 90%;
-    max-width: 400px;
+    max-width: 450px;
     text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.hidden {
+    display: none;
 }
 
 .modal-content h2 {
     margin-bottom: 20px;
-    color: #ff4d4d;
+    color: var(--primary-color);
+    font-family: var(--font-secondary);
+    font-size: 2em;
+    font-weight: 700;
 }
 
 .modal-content p {
     margin-bottom: 20px;
     font-size: 1.1em;
+    color: var(--text-color);
 }
 
-/* Adding animation to the modal */
-.modal.animate__animated {
-    animation-duration: 0.5s;
+/* Styl pól input */
+#username-input, #admin-username, #admin-password {
+    width: 85%;
+    padding: 14px;
+    margin-bottom: 15px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s;
 }
 
-#username-modal {
-    /* Additional styles for the username modal */
+#username-input:focus, #admin-username:focus, #admin-password:focus {
+    border-color: var(--primary-color);
+    outline: none;
 }
 
-/* Input field styles */
-#username-input {
-    width: 80%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-#username-submit {
-    padding: 10px 20px;
-    background-color: #ff4d4d;
+/* Styl przycisków w modalach */
+#username-submit, #admin-login-submit {
+    padding: 12px 26px;
+    background-color: var(--primary-color);
     color: #ffffff;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1em;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 10px;
+    box-shadow: 0 4px 8px var(--shadow-color);
 }
 
-#username-submit:hover {
+#username-submit:hover, #admin-login-submit:hover {
     background-color: #e60000;
+    transform: translateY(-2px);
 }
 
-/* Admin Warning Message */
-.admin-warning {
-    color: red;
-    font-weight: bold;
-    margin-bottom: 15px;
+/* Styl wiadomości zwrotnej w modalach */
+#username-feedback, #admin-login-feedback {
+    margin-top: 10px;
+    font-size: 0.95em;
+    color: #f44336;
+    min-height: 20px; /* Utrzymanie przestrzeni nawet gdy puste */
 }
 
-/* Admin Input Groups */
-.admin-input-group {
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-.admin-input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-.admin-input-group input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Buttons */
-#admin-login-submit {
-    padding: 10px 20px;
-    background-color: #ff4d4d;
+/* Styl przycisków w panelu administracyjnym */
+#reset-leaderboard-button, #delete-user-button {
+    padding: 12px 28px;
+    background-color: var(--secondary-color);
     color: #ffffff;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1em;
-    transition: background-color 0.3s;
+    margin-bottom: 15px;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 8px var(--shadow-color);
 }
 
-#admin-login-submit:hover {
-    background-color: #e60000;
+#reset-leaderboard-button:hover, #delete-user-button:hover {
+    background-color: #333333;
+    transform: translateY(-2px);
 }
 
-/* Cancel and Reset Buttons */
-.cancel-button, .reset-button {
-    padding: 10px 20px;
+/* Styl przycisków anulowania i zamykania */
+.cancel-button {
+    padding: 12px 28px;
     background-color: #cccccc;
     color: #333333;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1em;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
     margin-top: 10px;
+    box-shadow: 0 4px 8px var(--shadow-color);
 }
 
-.cancel-button:hover, .reset-button:hover {
-    background-color: #999999;
+.cancel-button:hover {
+    background-color: #b3b3b3;
+    transform: translateY(-2px);
 }
 
-/* Admin Panel Button Style */
+/* Styl przycisku panelu administracyjnego */
 .admin-panel-button {
     position: fixed;
-    top: 10px;
-    left: 10px;
-    padding: 5px 10px;
-    background-color: #333333;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
     color: #ffffff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    z-index: 2; /* Below modals */
-    opacity: 0.7;
-    transition: opacity 0.3s;
+    z-index: 3; /* Poniżej modalów */
+    opacity: 0.85;
+    transition: opacity 0.3s, background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    font-size: 1em;
 }
 
 .admin-panel-button:hover {
     opacity: 1;
+    background-color: #333333;
+    transform: translateY(-2px);
 }
 
-/* Hidden class to toggle visibility */
-.hidden {
-    display: none;
-}
-
-/* Feedback Message within Modals */
+/* Styl wiadomości zwrotnej w panelach */
 .feedback-message {
     margin-top: 10px;
-    font-size: 0.9em;
+    font-size: 0.95em;
+    min-height: 20px; /* Utrzymanie przestrzeni nawet gdy puste */
 }
 
-/* Responsive Design */
-@media (max-width: 1000px) {
-    /* No additional styles needed */
+/* Styl przycisku muzyki */
+#music-control {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 1.2em;
+    transition: background-color 0.3s, transform 0.2s, opacity 0.3s;
+    z-index: 5; /* Powyżej innych elementów */
 }
 
-@media (max-width: 600px) {
+#music-control:hover {
+    background-color: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+}
+
+/* Responsywność dla tabletów */
+@media (max-width: 768px) {
     .clicker-button {
-        width: 150px;
-        height: 150px;
-    }
-
-    .clicker-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        width: 180px;
+        height: 180px;
     }
 
     h1 {
         font-size: 2.5em;
+    }
+
+    h4 {
+        font-size: 1.2em;
     }
 
     p {
@@ -362,11 +461,11 @@ p {
     }
 
     .leaderboard-entry {
-        font-size: 0.9em;
+        font-size: 1em;
     }
 
     .modal-content h2 {
-        font-size: 1.5em;
+        font-size: 1.8em;
     }
 
     .modal-content p {
@@ -375,5 +474,41 @@ p {
 
     #username-input, #admin-username, #admin-password {
         width: 90%;
+    }
+}
+
+/* Responsywność dla urządzeń mobilnych */
+@media (max-width: 480px) {
+    .clicker-button {
+        width: 150px;
+        height: 150px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h4 {
+        font-size: 1em;
+    }
+
+    .submit-score-button {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+
+    #reset-leaderboard-button, #delete-user-button, .cancel-button {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+
+    .admin-panel-button {
+        padding: 8px 16px;
+        font-size: 0.9em;
+    }
+
+    #music-control {
+        padding: 8px 16px;
+        font-size: 1em;
     }
 }
