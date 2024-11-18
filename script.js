@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let score = 0;
     let username = '';
     let clickTimestamps = []; // Array to store click timestamps
-    const clickLimit = 7; // Maximum number of clicks
+    const clickLimit = 14; // Maksymalna liczba kliknięć w czasie 1 sekundy
     const clickWindow = 1000; // Time window in milliseconds (1 second)
     const localTimerDuration = 60; // Time in seconds to submit the score
 
