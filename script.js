@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showUsernameModal();
         updateScoreDisplay();
         fetchTotalLeaderboard();
-        // Set leaderboard to refresh every 60 seconds
+        // Set leaderboard to refresh every 30 seconds
         setInterval(refreshTotalLeaderboard, 30 * 1000);
     }
 
@@ -352,6 +352,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
+    // Function to handle user interactions (click or touch)
+    function handleUserInteraction(event) {
+        event.preventDefault(); // Prevent default behavior to avoid unwanted side effects
+        // Check if the user can click (hasn't exceeded the limit)
+        if (canClick()) {
+            if (submitScoreButton.disabled === false) {
+                // If the Submit button is active, it means the session has ended and is waiting for score submission
+                showFeedback("Click 'Submit Score' to submit your score.", "submission-info", feedbackMessage);
+                return;
+            }
+
+            handleClick();
+            animateClick();
+            // Play click sound
+            clickSound.currentTime = 0; // Reset playback time
+            clickSound.play();
+
+            // Create and animate bread drop
+            createBreadDrop();
+        } else {
+            // Click rate limit exceeded
+            showFeedback("Too many clicks! Please try again later.", "submission-error", feedbackMessage);
+        }
+    }
+
     // Event listener for the Submit Score button
     submitScoreButton.addEventListener('click', () => {
         handleSubmitScore();
@@ -385,41 +410,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Event listener for the clicker button with click rate limiting
-    clickerButton.addEventListener('click', () => {
-        // Check if the user can click (hasn't exceeded the limit)
-        if (canClick()) {
-            if (submitScoreButton.disabled === false) {
-                // If the Submit button is active, it means the session has ended and is waiting for score submission
-                showFeedback("Click 'Submit Score' to submit your score.", "submission-info", feedbackMessage);
-                return;
-            }
-
-            handleClick();
-            animateClick();
-            // Play click sound
-            clickSound.currentTime = 0; // Reset playback time
-            clickSound.play();
-
-            // Create and animate bread drop
-            createBreadDrop();
-        } else {
-            // Click rate limit exceeded
-            showFeedback("Too many clicks! Please try again later.", "submission-error", feedbackMessage);
-        }
-    });
+    // Event listener for the clicker button with touch and click support
+    clickerButton.addEventListener('click', handleUserInteraction);
+    clickerButton.addEventListener('touchstart', handleUserInteraction);
 
     // Admin Panel Button Event Listener
     adminPanelButton.addEventListener('click', () => {
         adminLoginModal.classList.remove('hidden');
         overlay.style.display = 'block';
     });
-
-    // Define admin credentials (ensure to secure these in a real application)
-    const ADMIN_CREDENTIALS = {
-        username: "admin", // Replace with your admin username
-        password: "password123" // Replace with your admin password
-    };
 
     // Admin Login Submit Event Listener
     adminLoginSubmit.addEventListener('click', () => {
@@ -495,4 +494,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     init();
 });
-
