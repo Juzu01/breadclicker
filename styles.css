@@ -108,6 +108,7 @@ h4 {
     transition: transform 0.1s ease-in-out, box-shadow 0.3s;
     box-shadow: 0 8px 16px var(--shadow-color);
     animation: gradientAnimation 15s ease infinite;
+    touch-action: manipulation; /* Prevents double-tap zoom */
 }
 
 @keyframes gradientAnimation {
@@ -173,6 +174,7 @@ p {
     transition: background-color 0.3s, transform 0.2s;
     margin-bottom: 30px;
     box-shadow: 0 6px 12px var(--shadow-color);
+    touch-action: manipulation; /* Prevents double-tap zoom */
 }
 
 .submit-score-button:disabled {
@@ -237,7 +239,6 @@ p {
     color: #777;
 }
 
-/* Crown icon styling */
 .crown-icon {
     width: 24px;
     height: 24px;
@@ -317,6 +318,7 @@ p {
     border-radius: 8px;
     font-size: 1em;
     transition: border-color 0.3s;
+    touch-action: manipulation; /* Prevents double-tap zoom */
 }
 
 #username-input:focus, #admin-username:focus, #admin-password:focus {
@@ -336,6 +338,7 @@ p {
     transition: background-color 0.3s, transform 0.2s;
     margin-top: 10px;
     box-shadow: 0 4px 8px var(--shadow-color);
+    touch-action: manipulation; /* Prevents double-tap zoom */
 }
 
 #username-submit:hover, #admin-login-submit:hover {
@@ -363,6 +366,7 @@ p {
     margin-bottom: 15px;
     transition: background-color 0.3s, transform 0.2s;
     box-shadow: 0 4px 8px var(--shadow-color);
+    touch-action: manipulation; /* Prevents double-tap zoom */
 }
 
 #reset-leaderboard-button:hover, #delete-user-button:hover {
@@ -382,6 +386,7 @@ p {
     transition: background-color 0.3s, transform 0.2s;
     margin-top: 10px;
     box-shadow: 0 4px 8px var(--shadow-color);
+    touch-action: manipulation; /* Prevents double-tap zoom */
 }
 
 .cancel-button:hover {
@@ -405,6 +410,7 @@ p {
     transition: opacity 0.3s, background-color 0.3s, transform 0.2s;
     box-shadow: 0 4px 8px var(--shadow-color);
     font-size: 1em;
+    touch-action: manipulation; /* Prevents double-tap zoom */
 }
 
 .admin-panel-button:hover {
@@ -441,6 +447,7 @@ p {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     font-size: 1.2em;
     transition: background-color 0.3s, transform 0.2s, opacity 0.3s;
+    touch-action: manipulation; /* Prevents double-tap zoom */
 }
 
 #music-control:hover {
@@ -502,6 +509,7 @@ p {
     animation: drop 4s forwards;
     opacity: 1;
     z-index: 3; /* Ensure it appears above other elements */
+    will-change: transform, opacity; /* Optimize for performance */
 }
 
 /* Drop Animation */
