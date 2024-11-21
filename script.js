@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateScoreDisplay();
         fetchTotalLeaderboard();
         // Set leaderboard to refresh every 60 seconds
-        setInterval(refreshTotalLeaderboard, 60 * 1000);
+        setInterval(refreshTotalLeaderboard, 30 * 1000);
     }
 
     // Function to start a new game session
