@@ -55,6 +55,79 @@ document.addEventListener('DOMContentLoaded', () => {
     const clickSound = document.getElementById('click-sound');
     const backgroundMusic = document.getElementById('background-music');
 
+    // Profanity Filter Variables
+    let forbiddenPatterns = [];
+    const charSubstitutions = {
+        'a': ['@', '4'],
+        'b': ['8'],
+        'e': ['3'],
+        'i': ['1', '!', '|'],
+        'l': ['1', '|'],
+        'o': ['0'],
+        's': ['$', '5'],
+        't': ['7'],
+        'g': ['9'],
+        'z': ['2'],
+        'c': ['<', '(', '{', '['],
+        'd': ['[)', '|)'],
+        'f': ['ph'],
+        'k': ['<', '|<'],
+        'm': ['^^'],
+        'n': ['|\\|'],
+        'u': ['v'],
+        // Add more substitutions as needed
+    };
+
+    // Function to generate regex pattern for a forbidden word
+    function generateRegex(word, substitutions) {
+        let pattern = '';
+        for (let char of word.toLowerCase()) {
+            if (substitutions[char]) {
+                // Escape special regex characters
+                const escapedSubstitutions = substitutions[char].map(sub => sub.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'));
+                const chars = [char, ...escapedSubstitutions];
+                pattern += `[${chars.join('')}]\\W*`;
+            } else {
+                // Escape special regex characters
+                const escapedChar = char.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+                pattern += `${escapedChar}\\W*`;
+            }
+        }
+        // Remove the trailing \W* for accurate matching
+        pattern = pattern.slice(0, -3);
+        // Create a regex that searches for the pattern anywhere in the string
+        return new RegExp(pattern, 'i');
+    }
+
+    // Function to load forbidden words from JSON
+    async function loadForbiddenWords() {
+        try {
+            const response = await fetch('forbiddenWords.json');
+            const data = await response.json();
+            return data.forbiddenWords;
+        } catch (error) {
+            console.error("Error loading forbidden words:", error);
+            return [];
+        }
+    }
+
+    // Function to initialize forbidden patterns
+    async function initializeForbiddenPatterns() {
+        const forbiddenWords = await loadForbiddenWords();
+        forbiddenPatterns = forbiddenWords.map(word => generateRegex(word, charSubstitutions));
+        console.log("Forbidden patterns initialized:", forbiddenPatterns);
+    }
+
+    // Function to check if the username is valid
+    function isUsernameValid(username) {
+        for (let pattern of forbiddenPatterns) {
+            if (pattern.test(username.toLowerCase())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // Function to show the username modal with animation
     function showUsernameModal() {
         console.log("Showing username modal.");
@@ -212,8 +285,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Function to initialize the application
-    function init() {
+    async function init() {
         console.log("Initializing application.");
+        await initializeForbiddenPatterns();
         // Show the nickname modal on each visit
         showUsernameModal();
         updateScoreDisplay();
@@ -248,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to create and animate bread images
     function createBreadDrop() {
         const bread = document.createElement('img');
-        bread.src = 'images/droppingbread.png'; // Użycie nowej nazwy obrazka
+        bread.src = 'images/droppingbread.png'; // Ensure this image exists in your project
         bread.classList.add('bread');
 
         // Get the bounding rectangle of the clicker button
@@ -287,7 +361,11 @@ document.addEventListener('DOMContentLoaded', () => {
     usernameSubmit.addEventListener('click', () => {
         const enteredUsername = usernameInput.value.trim();
         if (enteredUsername === '') {
-            alert("Nickname cannot be empty.");
+            showFeedback("Nickname cannot be empty.", "submission-error", feedbackMessage);
+            return;
+        }
+        if (!isUsernameValid(enteredUsername)) {
+            showFeedback("The nickname contains inappropriate language. Please choose another one.", "submission-error", feedbackMessage);
             return;
         }
         username = enteredUsername;
@@ -336,6 +414,12 @@ document.addEventListener('DOMContentLoaded', () => {
         adminLoginModal.classList.remove('hidden');
         overlay.style.display = 'block';
     });
+
+    // Define admin credentials (ensure to secure these in a real application)
+    const ADMIN_CREDENTIALS = {
+        username: "admin", // Replace with your admin username
+        password: "password123" // Replace with your admin password
+    };
 
     // Admin Login Submit Event Listener
     adminLoginSubmit.addEventListener('click', () => {
@@ -411,3 +495,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     init();
 });
+
