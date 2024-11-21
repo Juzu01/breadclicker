@@ -55,12 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const clickSound = document.getElementById('click-sound');
     const backgroundMusic = document.getElementById('background-music');
 
-    // Admin Credentials (Hardcoded - Not Secure!)
-    const ADMIN_CREDENTIALS = {
-        username: "JuzuToSzef",
-        password: "kL110L010__"
-    };
-
     // Function to show the username modal with animation
     function showUsernameModal() {
         console.log("Showing username modal.");
